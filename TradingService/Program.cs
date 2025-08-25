@@ -10,8 +10,6 @@ using TradingService.Models.DTOs;
 using System.Reflection;
 
 // Configure Serilog
-// The task description said “logging” so I assumed it meant technical log rather than user log
-//which is why serilog is used instead of user auth, such as Auth0, JWT, etc.
 Log.Logger = new LoggerConfiguration()
     .WriteTo.Console()
     .WriteTo.File("logs/trading-service-.txt", rollingInterval: RollingInterval.Day)
@@ -36,28 +34,28 @@ var useInMemoryDatabase = builder.Configuration.GetValue<bool>("UseInMemoryDatab
 
 if (useInMemoryDatabase)
 {
-    // 📝 TO USE IN-MEMORY DATABASE:
+    // TO USE IN-MEMORY DATABASE:
     // 1. Set "UseInMemoryDatabase": true in appsettings.json or appsettings.Development.json
     // 2. Or set environment variable: UseInMemoryDatabase=true
     // 3. Or uncomment the lines below and comment the PostgreSQL section
     
     builder.Services.AddDbContext<TradingDbContext>(options =>
         options.UseInMemoryDatabase("TradingDb"));
-    Log.Information("🗄️ Using In-Memory Database (data will be lost on restart)");
+    Log.Information("[DATABASE] Using In-Memory Database (data will be lost on restart)");
 }
 else
 {
-    // 🐘 PostgreSQL Database (DEFAULT)
+    // PostgreSQL Database (DEFAULT)
     // Requires PostgreSQL to be running (use docker-compose up postgres -d)
     builder.Services.AddDbContext<TradingDbContext>(options =>
         options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
-    Log.Information("🐘 Using PostgreSQL Database");
+    Log.Information("[DATABASE] Using PostgreSQL Database");
 }
 
-// 📝 ALTERNATIVE: Force In-Memory Database (uncomment to override configuration)
+// ALTERNATIVE: Force In-Memory Database (uncomment to override configuration)
 // builder.Services.AddDbContext<TradingDbContext>(options =>
 //     options.UseInMemoryDatabase("TradingDb"));
-// Log.Information("🗄️ Using In-Memory Database (forced override)");
+// Log.Information("[DATABASE] Using In-Memory Database (forced override)");
 
 // Add AutoMapper
 builder.Services.AddAutoMapper(typeof(TradeMappingProfile));
@@ -72,11 +70,11 @@ builder.Services.AddScoped<ITradeService, TradeService>();
 try
 {
     builder.Services.AddSingleton<IMessageQueueService, RabbitMQService>();
-    Log.Information("🐰 RabbitMQ service registered");
+    Log.Information("[RABBITMQ] RabbitMQ service registered");
 }
 catch (Exception ex)
 {
-    Log.Warning(ex, "⚠️ Could not initialize RabbitMQ service - continuing without message queue");
+    Log.Warning(ex, "[RABBITMQ] Could not initialize RabbitMQ service - continuing without message queue");
     // Register a dummy service if RabbitMQ fails
     builder.Services.AddSingleton<IMessageQueueService, DummyMessageQueueService>();
 }
@@ -127,7 +125,7 @@ try
 }
 catch (Exception ex)
 {
-    Log.Warning(ex, "⚠️ Could not configure RabbitMQ health check - continuing with basic health checks");
+    Log.Warning(ex, "[HEALTHCHECK] Could not configure RabbitMQ health check - continuing with basic health checks");
     builder.Services.AddHealthChecks()
         .AddDbContextCheck<TradingDbContext>();
 }
@@ -152,7 +150,7 @@ try
     {
         // For in-memory database, just ensure it's created
         context.Database.EnsureCreated();
-        Log.Information("✅ In-Memory database initialized");
+        Log.Information("[SUCCESS] In-Memory database initialized");
     }
     else
     {
@@ -160,20 +158,20 @@ try
         try
         {
             context.Database.Migrate();
-            Log.Information("✅ PostgreSQL migrations applied successfully");
+            Log.Information("[SUCCESS] PostgreSQL migrations applied successfully");
         }
         catch (Exception ex)
         {
-            Log.Warning(ex, "⚠️ Could not apply migrations, attempting to create database");
+            Log.Warning(ex, "[WARNING] Could not apply migrations, attempting to create database");
             try
             {
                 context.Database.EnsureCreated();
-                Log.Information("✅ PostgreSQL database created");
+                Log.Information("[SUCCESS] PostgreSQL database created");
             }
             catch (Exception createEx)
             {
-                Log.Error(createEx, "❌ Failed to initialize database. Please ensure PostgreSQL is running.");
-                Log.Warning("💡 Suggestion: Set UseInMemoryDatabase=true in appsettings.Development.json for easier testing");
+                Log.Error(createEx, "[ERROR] Failed to initialize database. Please ensure PostgreSQL is running.");
+                Log.Warning("[TIP] Suggestion: Set UseInMemoryDatabase=true in appsettings.Development.json for easier testing");
                 throw;
             }
         }
@@ -181,7 +179,7 @@ try
 }
 catch (Exception ex)
 {
-    Log.Error(ex, "❌ Database initialization failed");
+    Log.Error(ex, "[ERROR] Database initialization failed");
     throw;
 }
 
@@ -207,32 +205,35 @@ app.MapControllers();
 app.MapHealthChecks("/health");
 
 // Add a simple root endpoint for testing
-app.MapGet("/", () => "🚀 MeDirect Trading Service is running! Go to /swagger for API documentation.");
+app.MapGet("/", () => "[RUNNING] MeDirect Trading Service is running! Go to /swagger for API documentation.");
 
 try
 {
-    Log.Information("🚀 Starting MeDirect Trading Service");
-    Log.Information("📊 Environment: {Environment}", app.Environment.EnvironmentName);
-    Log.Information("🗄️ Database: {DatabaseType}", useInMemoryDatabase ? "In-Memory" : "PostgreSQL");
-    Log.Information("📚 Swagger UI: Available at root URL");
-    Log.Information("🏥 Health checks: /health");
+    Log.Information("[STARTUP] Starting MeDirect Trading Service");
+    Log.Information("[INFO] Environment: {Environment}", app.Environment.EnvironmentName);
+    Log.Information("[INFO] Database: {DatabaseType}", useInMemoryDatabase ? "In-Memory" : "PostgreSQL");
+    Log.Information("[INFO] Swagger UI: Available at root URL");
+    Log.Information("[INFO] Health checks: /health");
     
     // Log the URLs where the service will be available
-    Log.Information("🌐 Service URLs:");
-    Log.Information("   🔗 HTTP:  http://localhost:5100");
-    Log.Information("   🔒 HTTPS: https://localhost:7179");
-    Log.Information("💡 If HTTPS fails, use HTTP URL or trust the dev certificate with: dotnet dev-certs https --trust");
+    Log.Information("[URLS] Service URLs:");
+    Log.Information("   [HTTP]  HTTP:  http://localhost:5100");
+    Log.Information("   [HTTPS] HTTPS: https://localhost:7179");
+    Log.Information("[TIP] If HTTPS fails, use HTTP URL or trust the dev certificate with: dotnet dev-certs https --trust");
     
     app.Run();
 }
 catch (Exception ex)
 {
-    Log.Fatal(ex, "💥 Trading Service terminated unexpectedly");
+    Log.Fatal(ex, "[FATAL] Trading Service terminated unexpectedly");
 }
 finally
 {
     Log.CloseAndFlush();
 }
 
-// Make Program class public for testing
+/// <summary>
+/// Entry point class for the MeDirect Trading Service application.
+/// This partial class declaration is required for integration testing to access the application's configuration.
+/// </summary>
 public partial class Program { }
