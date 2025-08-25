@@ -1,4 +1,4 @@
-# MeDirect Trading Service - Banking Microservice
+﻿# MeDirect Trading Service - Banking Microservice
 
 [![.NET 8](https://img.shields.io/badge/.NET-8.0-blue.svg)](https://dotnet.microsoft.com/download/dotnet/8.0)
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-15-blue.svg)](https://www.postgresql.org/)
@@ -8,36 +8,36 @@
 
 > **A production-ready microservice for trading operations, built as part of MeDirect's transition from monolith to microservices architecture.**
 
-## ?? **Project Overview**
+## **Project Overview**
 
 This microservice handles all trading functionality for the bank, providing:
-- ? **Trade Execution** via RESTful APIs  
-- ? **Trade Retrieval** with advanced filtering and pagination
-- ? **Data Persistence** in PostgreSQL database
-- ? **Message Queue Integration** with RabbitMQ for async notifications
-- ? **Console Application** demonstrating message consumption
-- ? **Comprehensive Unit & Integration Tests**
-- ? **Production-ready Logging** with Serilog
-- ? **Full Docker Support** for containerized deployment
+- **Trade Execution** via RESTful APIs  
+- **Trade Retrieval** with advanced filtering and pagination
+- **Data Persistence** in PostgreSQL database
+- **Message Queue Integration** with RabbitMQ for async notifications
+- **Console Application** demonstrating message consumption
+- **Comprehensive Unit & Integration Tests**
+- **Production-ready Logging** with Serilog
+- **Full Docker Support** for containerized deployment
 
-## ??? **Architecture**
+## **Architecture**
 
 ```
-???????????????????    ???????????????????    ???????????????????
-?   Trading API   ??????   PostgreSQL    ?    ?    RabbitMQ     ?
-?   (REST API)    ?    ?   (Database)    ?    ? (Message Queue) ?
-?   .NET 8        ?    ?   Persistent    ?    ?   Async Msgs    ?
-???????????????????    ???????????????????    ???????????????????
-                                                        ?
-                                                        ?
-                                               ???????????????????
-                                               ? Trading Consumer?
-                                               ? (Console App)   ?
-                                               ? Message Logger  ?
-                                               ???????????????????
++------------------+    +------------------+    +------------------+
+|   Trading API    |--->|   PostgreSQL     |    |    RabbitMQ      |
+|   (REST API)     |    |   (Database)     |    | (Message Queue)  |
+|   .NET 8         |    |   Persistent     |    |   Async Msgs     |
++------------------+    +------------------+    +------------------+
+                                                         |
+                                                         v
+                                                +------------------+
+                                                | Trading Consumer |
+                                                | (Console App)    |
+                                                | Message Logger   |
+                                                +------------------+
 ```
 
-## ??? **Technologies Used**
+## **Technologies Used**
 
 | Category | Technology | Version | Purpose |
 |----------|------------|---------|---------|
@@ -53,7 +53,7 @@ This microservice handles all trading functionality for the bank, providing:
 | **Documentation** | Swagger/OpenAPI | 6.6 | API documentation |
 | **Containerization** | Docker + Docker Compose | Latest | Deployment and orchestration |
 
-## ??? **Database Configuration**
+## **Database Configuration**
 
 ### **Default: PostgreSQL (Production-Ready)**
 ```json
@@ -77,13 +77,13 @@ This microservice handles all trading functionality for the bank, providing:
 2. **Environment Variable**: `UseInMemoryDatabase=true`
 3. **Code Override**: Uncomment lines in Program.cs
 
-## ?? **Prerequisites**
+## **Prerequisites**
 
 - [.NET 8 SDK](https://dotnet.microsoft.com/download/dotnet/8.0)
 - [Docker Desktop](https://www.docker.com/products/docker-desktop)
 - [Git](https://git-scm.com/downloads)
 
-## ?? **Quick Start**
+## **Quick Start**
 
 ### **Option 1: Automated Setup (Recommended)**
 ```cmd
@@ -110,14 +110,14 @@ cd TradingConsumer
 dotnet run
 ```
 
-## ?? **Testing**
+## **Testing**
 
 ### **Comprehensive Test Suite**
-- ? **Unit Tests** - Services, Validators, Business Logic (30+ tests)
-- ? **Integration Tests** - End-to-end API testing (10+ tests)  
-- ? **Validation Tests** - Input validation and business rules (15+ tests)
-- ? **Mocking** - External dependencies (RabbitMQ, Database)
-- ? **Test Coverage** - Comprehensive coverage of critical paths
+- **Unit Tests** - Services, Validators, Business Logic (30+ tests)
+- **Integration Tests** - End-to-end API testing (10+ tests)  
+- **Validation Tests** - Input validation and business rules (15+ tests)
+- **Mocking** - External dependencies (RabbitMQ, Database)
+- **Test Coverage** - Comprehensive coverage of critical paths
 
 ### **Running Tests - Multiple Options**
 
@@ -138,7 +138,7 @@ run-tests.bat
 ```cmd
 cd TradingService.Tests
 
-# All tests (50+ tests)
+# All tests (55+ tests)
 dotnet test
 
 # Unit tests only (Services + Validators)
@@ -158,9 +158,9 @@ dotnet watch test
 ```
 
 #### **Option 3: Visual Studio**
-- **Test Explorer**: View ? Test Explorer
+- **Test Explorer**: View -> Test Explorer
 - **Run All**: Ctrl+R, A
-- **Debug Tests**: Right-click ? Debug
+- **Debug Tests**: Right-click -> Debug
 
 ### **Test Categories & Coverage**
 
@@ -169,29 +169,29 @@ dotnet watch test
 | **TradeServiceTests** | 15+ | Core business logic testing | Service layer, database operations |
 | **CreateTradeDtoValidatorTests** | 15+ | Input validation testing | All validation rules, edge cases |
 | **TradingApiIntegrationTests** | 10+ | End-to-end API testing | Complete request/response cycle |
-| **Edge Case Tests** | 10+ | Error handling, boundary conditions | Exception scenarios |
+| **Edge Case Tests** | 15+ | Error handling, boundary conditions | Exception scenarios |
 
 ### **Test Results - Expected Output**
 ```
 Test run for TradingService.Tests.dll (.NET 8.0)
 Microsoft (R) Test Execution Command Line Tool Version 17.8.0
 Starting test execution, please wait...
-A total of 54 test files matched the specified pattern.
+A total of 1 test files matched the specified pattern.
 
-Passed!  - Failed:     0, Passed:    54, Skipped:     0, Total:    54, Duration: 14s
+Passed!  - Failed:     0, Passed:    55, Skipped:     0, Total:    55, Duration: 5s
 ```
 
 ### **What Gets Tested**
-- ? **Trade Creation** - Valid/invalid trade scenarios
-- ? **Trade Retrieval** - Filtering, pagination, user-specific queries
-- ? **Trade Statistics** - Calculation accuracy, edge cases
-- ? **Input Validation** - Symbol, quantity, price, user ID validation
-- ? **Error Handling** - Database failures, RabbitMQ failures
-- ? **API Endpoints** - HTTP status codes, response formats
-- ? **Business Rules** - Trade value limits, data integrity
-- ? **Message Queue** - Verify trade messages are published
+- **Trade Creation** - Valid/invalid trade scenarios
+- **Trade Retrieval** - Filtering, pagination, user-specific queries
+- **Trade Statistics** - Calculation accuracy, edge cases
+- **Input Validation** - Symbol, quantity, price, user ID validation
+- **Error Handling** - Database failures, RabbitMQ failures
+- **API Endpoints** - HTTP status codes, response formats
+- **Business Rules** - Trade value limits, data integrity
+- **Message Queue** - Verify trade messages are published
 
-## ?? **API Endpoints**
+## **API Endpoints**
 
 ### **Execute Trade**
 ```http
@@ -220,7 +220,7 @@ GET /health
 GET / (Swagger UI)
 ```
 
-## ?? **API Testing**
+## **API Testing**
 
 ### **Automated API Testing**
 ```cmd
@@ -240,7 +240,7 @@ test-api.bat
 2. Open browser: `http://localhost:5100`
 3. Use Swagger UI to test endpoints interactively
 
-## ??? **Database Schema**
+## **Database Schema**
 
 ### **Trades Table**
 | Column | Type | Description |
@@ -273,7 +273,7 @@ start-database.bat
 # SELECT COUNT(*) FROM trades;
 ```
 
-## ?? **Logging Strategy**
+## **Logging Strategy**
 
 ### **Structured Logging with Serilog**
 - **Console Output** - Development visibility
@@ -290,7 +290,7 @@ start-database.bat
 
 **Note**: This implements **technical logging** (Serilog). For **user authentication/authorization**, implement JWT tokens, OAuth2, or similar as needed.
 
-## ?? **Docker Deployment**
+## **Docker Deployment**
 
 ### **Development Environment**
 ```cmd
@@ -313,7 +313,7 @@ docker-compose up --build
 - **Database Admin**: http://localhost:8080
 - **RabbitMQ Management**: http://localhost:15672
 
-## ?? **Monitoring & Health Checks**
+## **Monitoring & Health Checks**
 
 ### **Health Endpoints**
 - **API Health**: `/health`
@@ -326,7 +326,7 @@ docker-compose up --build
 - Message queue depth
 - API response times
 
-## ?? **Configuration Management**
+## **Configuration Management**
 
 ### **Environment-Specific Settings**
 - **Development**: `appsettings.Development.json`
@@ -349,40 +349,40 @@ docker-compose up --build
 }
 ```
 
-## ?? **Project Structure**
+## **Project Structure**
 
 ```
 TradingService/
-??? ?? TradingService/           # Main API project
-?   ??? ?? Controllers/          # API controllers
-?   ??? ?? Data/                # Database context & migrations
-?   ??? ?? Models/              # Domain models & DTOs
-?   ??? ?? Services/            # Business logic services
-?   ??? ?? Mappings/            # AutoMapper profiles
-?   ??? ?? Validators/          # FluentValidation validators
-?   ??? ?? Program.cs           # Application entry point
-?   ??? ?? Dockerfile           # API containerization
-?
-??? ?? TradingConsumer/         # Message consumer app
-?   ??? ?? Services/            # Consumer services
-?   ??? ?? Program.cs           # Consumer entry point
-?   ??? ?? Dockerfile           # Consumer containerization
-?
-??? ?? TradingService.Tests/    # Test project (50+ tests)
-?   ??? ?? Services/            # Service unit tests
-?   ??? ?? Validators/          # Validator tests
-?   ??? ?? Integration/         # Integration tests
-?   ??? ?? TradingService.Tests.csproj # Test project file
-?
-??? ?? docker-compose.yml       # Multi-container orchestration
-??? ?? run-tests.bat           # Automated test runner
-??? ?? test-api.bat            # API testing script
-??? ?? start-database.bat      # Database setup script
-??? ?? fix-database-access.bat # Database troubleshooting
-??? ?? README.md               # This documentation
+├── TradingService/              # Main API project
+│   ├── Controllers/             # API controllers
+│   ├── Data/                   # Database context & migrations
+│   ├── Models/                 # Domain models & DTOs
+│   ├── Services/               # Business logic services
+│   ├── Mappings/               # AutoMapper profiles
+│   ├── Validators/             # FluentValidation validators
+│   ├── Program.cs              # Application entry point
+│   └── Dockerfile              # API containerization
+│
+├── TradingConsumer/            # Message consumer app
+│   ├── Services/               # Consumer services
+│   ├── Program.cs              # Consumer entry point
+│   └── Dockerfile              # Consumer containerization
+│
+├── TradingService.Tests/       # Test project (55+ tests)
+│   ├── Services/               # Service unit tests
+│   ├── Validators/             # Validator tests
+│   ├── Integration/            # Integration tests
+│   └── TradingService.Tests.csproj # Test project file
+│
+├── docker-compose.yml          # Multi-container orchestration
+├── run-tests.bat              # Automated test runner
+├── test-api.bat               # API testing script
+├── start-database.bat         # Database setup script
+├── fix-database-access.bat    # Database troubleshooting
+└── README.md                  # This documentation
 ```
 
-## ?? **Getting Started Checklist**
+## **Getting Started Checklist**
 
 - [ ] **Clone Repository** - `git clone <repo-url>`
 - [ ] **Install Prerequisites** - .NET 8 SDK, Docker Desktop
@@ -392,24 +392,24 @@ TradingService/
 - [ ] **Test API** - `test-api.bat` or visit Swagger UI
 - [ ] **Verify Database** - Access Adminer at http://localhost:8080
 
-## ?? **Business Requirements Compliance**
+## **Business Requirements Compliance**
 
 | Requirement | Implementation | Status |
 |-------------|----------------|--------|
-| Execute trades via API | POST /api/trades | ? |
-| Retrieve trades via API | GET /api/trades + filtering | ? |
-| Retain trade information | PostgreSQL with EF Core | ? |
-| Message queue on trade execution | RabbitMQ integration | ? |
-| Console app for message logging | TradingConsumer project | ? |
-| C# .NET Core 6.0+ | .NET 8 (latest) | ? |
-| Entity Framework Core | EF Core 8.0 | ? |
-| Database implementation | PostgreSQL (production) | ? |
-| RESTful APIs | ASP.NET Core Web API | ? |
-| Unit Tests | xUnit with 50+ comprehensive tests | ? |
-| Logging | Serilog structured logging | ? |
-| Docker | Complete containerization | ? |
+| Execute trades via API | POST /api/trades | ✅ COMPLETE |
+| Retrieve trades via API | GET /api/trades + filtering | ✅ COMPLETE |
+| Retain trade information | PostgreSQL with EF Core | ✅ COMPLETE |
+| Message queue on trade execution | RabbitMQ integration | ✅ COMPLETE |
+| Console app for message logging | TradingConsumer project | ✅ COMPLETE |
+| C# .NET Core 6.0+ | .NET 8 (latest) | ✅ COMPLETE |
+| Entity Framework Core | EF Core 8.0 | ✅ COMPLETE |
+| Database implementation | PostgreSQL (production) | ✅ COMPLETE |
+| RESTful APIs | ASP.NET Core Web API | ✅ COMPLETE |
+| Unit Tests | xUnit with 55+ comprehensive tests | ✅ COMPLETE |
+| Logging | Serilog structured logging | ✅ COMPLETE |
+| Docker | Complete containerization | ✅ COMPLETE |
 
-## ?? **Security Considerations**
+## **Security Considerations**
 
 - **Input Validation** - FluentValidation on all inputs
 - **SQL Injection Protection** - Entity Framework parameterized queries
@@ -419,7 +419,7 @@ TradingService/
 
 **Note**: Authentication/Authorization not implemented - add JWT/OAuth2 as needed for production.
 
-## ?? **Production Deployment Considerations**
+## **Production Deployment Considerations**
 
 ### **Environment Variables**
 ```bash
@@ -440,17 +440,17 @@ ASPNETCORE_ENVIRONMENT=Production
 - **Message Queue Durability** - Persistent RabbitMQ queues
 - **Health Checks** - Ready for load balancer integration
 
-## ?? **Support & Contact**
+## **Support & Contact**
 
 - **Technical Issues**: Create GitHub issue
 - **Email**: af.benitez@uniandes.edu.co  
 - **Documentation**: See README.md and code comments
 - **API Testing**: Use included Swagger UI
 
-## ?? **License**
+## **License**
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ---
 
-**Built with ?? for MeDirect's microservices transformation journey**
+**Built with ❤️ for MeDirect's microservices transformation journey**
