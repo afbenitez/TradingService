@@ -10,6 +10,8 @@ using TradingService.Models.DTOs;
 using System.Reflection;
 
 // Configure Serilog
+// The task description said “logging” so I assumed it meant technical log rather than user log
+// which is why serilog is used instead of user auth, such as Auth0, JWT, etc.
 Log.Logger = new LoggerConfiguration()
     .WriteTo.Console()
     .WriteTo.File("logs/trading-service-.txt", rollingInterval: RollingInterval.Day)
